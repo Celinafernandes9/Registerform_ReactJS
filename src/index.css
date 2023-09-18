@@ -13,14 +13,14 @@ code {
 }
 
 .login{
-background-image: url('./Img/bg1.jpeg');
+background-image: url('/public/bg1.jpeg');
 background-position: center;
 background-size: cover;
 background-repeat: no-repeat;
 height:70%;
 }
 .signup{
-background-image: url('./Img/bg1.jpeg');
+background-image: url('/public/bg1.jpeg');
 background-position: center;
 background-size: cover;
 background-repeat: no-repeat;
