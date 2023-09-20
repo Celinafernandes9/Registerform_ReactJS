@@ -2,29 +2,70 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Login = () => {
-  const [value, setValues] = useState({
+  const [values, setValues] = useState({
     email: "",
     password: "",
   });
+  const [data , setData] = useState([]);
 
   const handelChange = (e) => {
-    setValues({ ...value, [e.target.name]: e.target.value });
+    const { value, name } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
   const click = (e) => {
-    alert("form submitted successfully");
     e.preventDefault();
+
+    const user = localStorage.getItem("user");
+    console.log(user);
+
+     const {email, password } = values;
+     if (email === "") {
+      alert("Email is required");
+    } else if (!email.includes("@")) {
+      alert("Please enter a valid email");
+    } else if (password === "") {
+      alert("Password is requirerd");
+    } else if (password.length < 6) {
+      alert("password should be greater than 6 char");
+    } else {
+      if(user &&  user.length){
+        const userdata = JSON.parse(user);
+        const login = userdata.filter((logel, el)=>{
+          return logel.email === email && logel.password === password
+        });
+
+        if(login.length === 0){
+          alert("Invalid details")
+        }
+        else{
+          console.log("user login successfully");
+
+          localStorage.setItem("user_login", JSON.stringify(userdata))
+        }
+        
+
+
+
+      }
+
+      
+    }
+    
   };
 
   return (
     <>
       <div className="login template d-flex justify-content-center align-items-center vh-100 bg-img">
         <div className="form-container p-5 rounded border border-dark bg-transparent">
-          <form onSubmit={click}>
+          <form>
             <h2 className="text-white text-center mb-3">Login</h2>
 
             <div className="mb-2 text-white">
-              <label htmlFor="Email" class="form-label">
+              <label htmlFor="Email" className="form-label">
                 Email
               </label>
               <input
@@ -32,14 +73,13 @@ export const Login = () => {
                 placeholder=" ENTER YOUR EMAIL"
                 className="form-control"
                 name="email"
-                value={value.email}
                 onChange={handelChange}
                 required
               />
             </div>
 
             <div className="mb-2 text-white">
-              <label htmlFor="password" class="form-label">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
@@ -47,21 +87,20 @@ export const Login = () => {
                 placeholder=" ENTER YOUR PASSWORD"
                 className="form-control"
                 name="password"
-                value={value.password}
                 onChange={handelChange}
                 required
               />
             </div>
 
             <div className="mb-2 text-white ml-4">
-              <input type="checkbox" class="form-check-input" id="Check" />
+              <input type="checkbox" className="form-check-input" id="Check" />
               <label className="custom-input-lable ms-2" htmlFor="Check">
                 Remember Me
               </label>
             </div>
 
             <div className="d-grid">
-              <button className="btn btn-primary" type="submit">
+              <button className="btn btn-primary" type="submit" onClick={click}>
                 Login
               </button>
             </div>
