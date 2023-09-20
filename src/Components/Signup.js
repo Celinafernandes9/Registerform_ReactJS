@@ -1,38 +1,66 @@
-
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Signup = () => {
-  const [value, setValues] = useState({
+  const [values, setValues] = useState({
     firstname: "",
     lastname: "",
     email: "",
     password: "",
   });
 
-
+  const [data , setData] = useState([]);
+  
   const handelChange = (e) => {
-    const {value, name} = e.traget;
+    const { value, name } = e.target;
     setValues({
-      ...value,[name]: value  
-    })
+      ...values,
+      [name]: value
+    });
+  };
+
+  const click = (e) => {
+    e.preventDefault();
+    
+    const {firstname, lastname, email, password} = values;
+    if(firstname === ""){
+      alert("Firstname is required")
     }
-  
-    const click =(e)=>{
-      alert("form submitted successfully")
-      e.preventDefault();
-     }
-  
+    else if(lastname === ""){
+      alert("Lastname i required")
+    }
+    else if(email === ""){
+      alert("Email is required")
+    }
+    else if(!email.includes("@")){
+      alert("Please enter a valid email")
+    }
+    else if(password === ""){
+      alert("Password is requirerd")
+    }
+    else if(password.length < 6){
+      alert("password should be greater than 6 char")
+    }
+    else{
+       console.log("form submitted successfully");
+
+       localStorage.setItem("user", JSON.stringify([...data, values]));
+    }
+    
+
+   
+  }
+
   return (
     <>
       <div className="signup template d-flex justify-content-center align-items-center vh-100 bg-img">
         <div className="form-container p-5 rounded bg-white border border-dark bg-transparent">
-          <form onSubmit={click}>
+          <form>
             <h2 className="text-white text-center mb-3">Sign up</h2>
 
             <div className="mb-2 text-white">
-              <label htmlFor="fname" class="form-label">
+              <label htmlFor="fname" className="form-label">
                 First Name
               </label>
               <input
@@ -40,13 +68,12 @@ export const Signup = () => {
                 placeholder=" ENTER YOUR FIRST NAME"
                 className="form-control"
                 name="firstname"
-                value={value.firstname}
                 onChange={handelChange}
                 required
               />
             </div>
             <div className="mb-2 text-white">
-              <label htmlFor="Lname" class="form-label">
+              <label htmlFor="Lname" className="form-label">
                 Lirst Name
               </label>
               <input
@@ -54,13 +81,12 @@ export const Signup = () => {
                 placeholder=" ENTER YOUR LAST NAME"
                 className="form-control"
                 name="lastname"
-                value={value.lastname}
                 onChange={handelChange}
                 required
               />
             </div>
             <div className="mb-2 text-white">
-              <label htmlFor="Email1" class="form-label" >
+              <label htmlFor="Email1" className="form-label">
                 Email
               </label>
               <input
@@ -68,14 +94,13 @@ export const Signup = () => {
                 placeholder=" ENTER YOUR EMAIL"
                 className="form-control"
                 name="email"
-                value={value.email}
                 onChange={handelChange}
                 required
               />
             </div>
 
             <div className="mb-2 text-white">
-              <label htmlFor="password" class="form-label">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
@@ -83,14 +108,14 @@ export const Signup = () => {
                 placeholder=" ENTER YOUR PASSWORD"
                 className="form-control"
                 name="password"
-                value={value.password}
                 onChange={handelChange}
-               required/>
+                required
+              />
             </div>
 
             <div className="d-grid mt-2">
-              <button className="btn btn-primary"  type="submit">
-                 Sign Up
+              <button className="btn btn-primary" type="submit" onClick={click}>
+                Sign Up
               </button>
             </div>
 
